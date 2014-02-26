@@ -1,0 +1,10 @@
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+# User specific aliases and functions
+alias ll='ls -lh --time-style=long-iso --group-directories-first'
+
+# If tmux exists, let's attach last session of tmux or start a new one
+which tmux > /dev/null && [[ -z "$TMUX" ]] && (tmux attach || tmux)
