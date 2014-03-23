@@ -1,0 +1,15 @@
+syntax on
+
+set number
+set ruler
+
+set expandtab
+set tabstop=4
+set shiftwidth=4
+
+" display invisible characters
+set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
+set list
+
+set smartindent
+set autoindent
