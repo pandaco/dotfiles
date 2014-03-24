@@ -2,13 +2,16 @@ syntax on
 
 set number
 set ruler
+set showcmd
+set showmatch
+set cursorline
 
-set expandtab
-set tabstop=4
-set shiftwidth=4
+set expandtab    " convert tabs to spaces
+set tabstop=4    " 1 tab -> 4 spaces
+set shiftwidth=4 " 1 tab -> 4 spaces
 
 " display invisible characters
-set listchars=eol:$,tab:>\ ,trail:•,extends:#,nbsp:.,precedes:<
+set listchars=tab:>\ ,trail:•,extends:#,nbsp:.,precedes:<
 set list
 
 set smartindent
