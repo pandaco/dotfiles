@@ -9,7 +9,7 @@ set -g mouse-select-pane on
 set -g mouse-resize-pane on
 
 # Enable scroll with the mouse
-#set -g mouse-select-window on
+set -g mouse-select-window off
 
 # Show Pane Number
 #set-option -g status-left '#P'
@@ -19,10 +19,10 @@ set -g mouse-resize-pane on
 # SHORTCUT
 #==============================================================================
 
-# Changing default prefix to CTRL+x
-set -g prefix C-x
+# Changing default prefix to CTRL+a
+set -g prefix C-a
 unbind C-b
-bind C-x send-prefix
+bind C-a send-prefix
 
 # Reload .tmux.conf file
 bind r source ~/.tmux.conf
@@ -37,8 +37,8 @@ unbind %
 bind | split-window -h
 bind - split-window -v
 
-# Switch to the last window prefix + ctrl+x
-bind-key C-x last-window
+# Switch to the last window prefix + ctrl+a
+bind-key C-a last-window
 
 
 #==============================================================================
