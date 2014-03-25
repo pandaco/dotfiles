@@ -5,7 +5,7 @@
 set -g mode-mouse on
 
 # Use your mouse to select and resize pane
-set -g mouse-select-pane on
+set -g mouse-select-pane off
 set -g mouse-resize-pane on
 
 # Enable scroll with the mouse
