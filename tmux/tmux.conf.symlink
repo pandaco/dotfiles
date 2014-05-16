@@ -2,14 +2,14 @@
 # Source: http://blog.hawkhost.com/2010/07/02/tmux-–-the-terminal-multiplexer-part-2/
 
 # Activate mode mouse
-set -g mode-mouse on
+set-window-option -g mode-mouse on
 
 # Use your mouse to select and resize pane
-set -g mouse-select-pane off
-set -g mouse-resize-pane on
+set-option -g mouse-select-pane on
+set-option -g mouse-resize-pane on
 
 # Enable scroll with the mouse
-set -g mouse-select-window off
+set-option -g mouse-select-window on
 
 # Show Pane Number
 #set-option -g status-left '#P'

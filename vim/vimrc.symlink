@@ -1,6 +1,7 @@
 syntax on
 filetype plugin indent on
 
+set mouse=a
 set number
 set ruler
 set showcmd
