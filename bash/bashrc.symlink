@@ -9,5 +9,5 @@ alias ll='ls -lh --color --time-style=long-iso --group-directories-first'
 # If tmux exists, let's attach last session of tmux or start a new one
 which tmux > /dev/null && [[ -z "$TMUX" ]] && (tmux attach || tmux)
 
-export PS1='[\[\e[32m\]\u@\H\[\e[m\]:\[\e[31m\]\w\[\e[m\]]\n\[\e[33m\]$(__svn_cur_branch)$(__git_ps1 "(%s)")\[\e[m\]$ '
+export PS1='\n[\[\e[32m\]\u@\H\[\e[m\]:\[\e[31m\]\w\[\e[m\]]\n\[\e[33m\]$(__git_ps1 "(%s)")\[\e[m\]$ '
 
