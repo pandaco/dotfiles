@@ -14,6 +14,10 @@ set-option -g mouse-select-window on
 # Show Pane Number
 #set-option -g status-left '#P'
 
+# Most terminals do not support utf-8. This option prevents from inserting some
+# special chars on scrolling with mouse
+set-option -g mouse-utf8 off
+
 
 #==============================================================================
 # SHORTCUT
