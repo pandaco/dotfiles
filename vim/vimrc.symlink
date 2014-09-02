@@ -19,4 +19,7 @@ set list
 set smartindent
 set autoindent
 
-execute pathogen#infect()
+" force sudo saving mode
+cmap w!! w !sudo tee > /dev/null %
+
+execute pathogen#infect("bundles/{}")
