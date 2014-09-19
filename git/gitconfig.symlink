@@ -16,7 +16,7 @@
 	pullr = pull --rebase
 	unstage = reset HEAD
 	pushup = "!git push -u origin $(git currentbranch)"
-	lg = log --graph --pretty=tformat:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%an %cr)%Creset' --abbrev-commit --date=relative
+	lg = log --graph --pretty=tformat:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%an | %ci)%Creset'
 	lpush = "!git fetch; git --no-pager log origin/$(git currentbranch)..HEAD --oneline"
 	lpull = "!git fetch; git --no-pager log HEAD..origin/$(git currentbranch) --oneline"
 	whatsnew = "!git diff origin/$(git currentbranch)...HEAD"
