@@ -3,6 +3,9 @@ if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
 
+export LS_OPTIONS='--color=auto'
+eval "`dircolors`"
+
 # User specific aliases and functions
 alias ll='ls -lh --color --time-style=long-iso --group-directories-first'
 
