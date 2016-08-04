@@ -2,21 +2,24 @@
 # Source: http://blog.hawkhost.com/2010/07/02/tmux-–-the-terminal-multiplexer-part-2/
 
 # Activate mode mouse
-set-window-option -g mode-mouse on
+set-option -g mouse on
+
+# Since tmux 2.1 2015-10-18, mouse-mode has been rewritten
+#set-window-option -g mode-mouse on
 
 # Use your mouse to select and resize pane
-set-option -g mouse-select-pane on
-set-option -g mouse-resize-pane on
+#set-option -g mouse-select-pane on
+#set-option -g mouse-resize-pane on
 
 # Enable scroll with the mouse
-set-option -g mouse-select-window on
-
-# Show Pane Number
-#set-option -g status-left '#P'
+#set-option -g mouse-select-window on
 
 # Most terminals do not support utf-8. This option prevents from inserting some
 # special chars on scrolling with mouse
-set-option -g mouse-utf8 off
+#set-option -g mouse-utf8 off
+
+# Show Pane Number
+#set-option -g status-left '#P'
 
 
 #==============================================================================
