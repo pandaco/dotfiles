@@ -10,6 +10,6 @@ eval "`dircolors`"
 alias ll='ls -lh --color --time-style=long-iso --group-directories-first'
 
 # If tmux exists, let's attach last session of tmux or start a new one
-which tmux > /dev/null && [[ -z "$TMUX" ]] && (tmux attach || tmux)
+#which tmux > /dev/null && [[ -z "$TMUX" ]] && (tmux attach || tmux)
 
 export PS1='\[\e[1;30m\]`printf "%*s\n" "${COLUMNS:-$(tput cols)}" |tr " " "_"` \[\e[m\]\n\n[\[\e[32m\]\u@\H\[\e[m\]:\[\e[31m\]\w\[\e[m\]]\n\[\e[33m\]$(git status >/dev/null 2>&1 && git rev-parse --abbrev-ref HEAD)\[\e[m\]$ '
