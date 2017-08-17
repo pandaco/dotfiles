@@ -58,8 +58,8 @@ set -g set-titles on
 
 # Activity: loud or quiet?
 set -g monitor-activity on
-set -g visual-activity on
-set -g visual-bell on
+set -g visual-activity off
+set -g visual-bell off
 set -g visual-silence on
 set -g bell-action none
 
@@ -99,18 +99,22 @@ setw -g clock-mode-colour green
 
 # Window status
 setw -g window-status-current-fg yellow
-setw -g window-status-current-bg colour238
+setw -g window-status-current-bg '#000000'
 setw -g window-status-current-attr bold
 setw -g window-status-current-format ' #[fg=yellow][#I:#[fg=colour255]#W#[fg=colour50]#F#[fg=yellow]] '
 
 setw -g window-status-fg red
-setw -g window-status-bg colour235
+setw -g window-status-bg '#000000'
 setw -g window-status-attr none
 setw -g window-status-format ' #[fg=red][#I:#[fg=colour250]#W#[fg=colour50]#F#[fg=red]] '
 
 setw -g window-status-bell-attr bold
-setw -g window-status-bell-fg colour255
-setw -g window-status-bell-bg colour1
+setw -g window-status-bell-fg blue
+setw -g window-status-bell-bg yellow
+
+setw -g window-status-activity-style bg='#666666',bold,blink
+
+
 
 
 
