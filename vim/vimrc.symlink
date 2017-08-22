@@ -49,6 +49,11 @@ Plug 'lumiliet/vim-twig', { 'branch': 'master' }
 " Ctrl+p
 Plug 'kien/ctrlp.vim'
 
+" easymotion
+" <leader><leader>w, <leader><leader>f+letter
+Plug 'https://github.com/easymotion/vim-easymotion'
+
+
 call plug#end()
 
 
