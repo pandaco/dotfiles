@@ -23,6 +23,49 @@ set autoindent
 " force sudo saving mode
 cmap w!! w !sudo tee > /dev/null %
 
+
+
+"###############################################################
+" PLUGINS REGISTRATION
+"###############################################################
+
 call plug#begin('~/.vim/plugged')
 
+" Vim + Git
+" :Gstatus, :Gdiff
+Plug 'tpope/vim-fugitive'
+
+" Plugin for easily exploring (or browsing) Vim|:buffers|
+" <leader>be
+Plug 'jlanzarotta/bufexplorer', { 'branch': 'master' }
+
+" Vim explorer
+" Ctrl+n
+Plug 'scrooloose/nerdtree', { 'branch': 'master' }
+
+Plug 'lumiliet/vim-twig', { 'branch': 'master' }
+
+" crtlP - Finder for Vim
+" Ctrl+p
+Plug 'kien/ctrlp.vim'
+
 call plug#end()
+
+
+"###############################################################
+" PLUGINS CONFIGURATION
+"###############################################################
+
+" NerdTree - Open NerdTree when vim starts up if no files specified
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+" NerdTree - Open NerdTree when vim starts up on a directory
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+
+" NerdTree - Map ctrl+n
+map <C-n> :NERDTreeToggle<CR>
+
+" BufExplorer
+nnoremap <silent> <F11> :ToggleBufExplorer<CR>
