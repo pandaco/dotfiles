@@ -23,4 +23,6 @@ set autoindent
 " force sudo saving mode
 cmap w!! w !sudo tee > /dev/null %
 
-"execute pathogen#infect("bundles/{}")
+call plug#begin('~/.vim/plugged')
+
+call plug#end()
