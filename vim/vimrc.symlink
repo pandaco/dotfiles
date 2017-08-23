@@ -20,6 +20,10 @@ set list
 set smartindent
 set autoindent
 
+" Enable 256 colors in vim
+" http://vim.wikia.com/wiki/256_colors_in_vim
+set t_Co=256
+
 " force sudo saving mode
 cmap w!! w !sudo tee > /dev/null %
 
@@ -61,6 +65,11 @@ Plug 'kien/ctrlp.vim'
 " <leader><leader>w, <leader><leader>f+letter
 Plug 'https://github.com/easymotion/vim-easymotion'
 
+" airline
+" Fonts to install in your host system
+" https://github.com/powerline/fonts
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 call plug#end()
 
@@ -82,3 +91,15 @@ map <C-n> :NERDTreeToggle<CR>
 
 " BufExplorer
 nnoremap <silent> <F11> :ToggleBufExplorer<CR>
+
+" Airline
+set laststatus=2
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+let g:airline_theme='wombat'
+
+" Airline - The powerline font symbols are partially messed up
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+let g:airline_symbols.space = "\ua0"
