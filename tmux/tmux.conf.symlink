@@ -98,21 +98,21 @@ setw -g clock-mode-colour green
 
 
 # Window status
-setw -g window-status-current-fg yellow
+setw -g window-status-current-fg green
 setw -g window-status-current-bg '#000000'
 setw -g window-status-current-attr bold
-setw -g window-status-current-format ' #[fg=yellow][#I:#[fg=colour255]#W#[fg=colour50]#F#[fg=yellow]] '
+setw -g window-status-current-format ' #[fg=default][#I:#[fg=colour255]#W#[fg=colour50]#F#[fg=default]] '
 
 setw -g window-status-fg red
 setw -g window-status-bg '#000000'
 setw -g window-status-attr none
-setw -g window-status-format ' #[fg=red][#I:#[fg=colour250]#W#[fg=colour50]#F#[fg=red]] '
+setw -g window-status-format ' #[fg=default][#I:#[fg=colour250]#W#[fg=colour50]#F#[fg=default]] '
 
 setw -g window-status-bell-attr bold
 setw -g window-status-bell-fg blue
 setw -g window-status-bell-bg yellow
 
-setw -g window-status-activity-style bg='#666666',bold,blink
+setw -g window-status-activity-style fg='yellow',bold,blink
 
 
 
