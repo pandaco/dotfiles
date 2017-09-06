@@ -15,6 +15,9 @@ set -sg escape-time 0
 
 set -g default-terminal tmux
 
+# Start windows and panes at 1, not 0
+set -g base-index 1
+setw -g pane-base-index 1
 
 #==============================================================================
 # SHORTCUT
