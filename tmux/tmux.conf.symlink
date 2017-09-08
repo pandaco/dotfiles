@@ -13,7 +13,7 @@ set -g history-limit 25000
 # No delay for espace key press
 set -sg escape-time 0
 
-set -g default-terminal tmux
+set -g default-terminal "screen-256color"
 
 
 #==============================================================================
