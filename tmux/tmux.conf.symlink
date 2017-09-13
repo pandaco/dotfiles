@@ -51,7 +51,7 @@ bind -n S-right next-window
 #==============================================================================
 
 # Auto window rename
-setw -g automatic-rename on
+setw -g automatic-rename off
 setw -g automatic-rename-format '#{pane_title}'
 set -g set-titles on
 
