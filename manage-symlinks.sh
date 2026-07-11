@@ -43,7 +43,7 @@ function install_symlinks
 {
     local symlink_source_path=$1
     local symlink_dest=$2
-    local target="$HOME/.$symlink_dest"
+    local target="$HOME/$symlink_dest"
 
     if [ -L "$target" ]; then
         if $FORCE; then
@@ -51,6 +51,7 @@ function install_symlinks
                 echo "[dry-run] Would overwrite existing symlink: $target -> $symlink_source_path"
             else
                 rm -f "$target"
+                mkdir -p "$(dirname "$target")"
                 ln -s "$symlink_source_path" "$target"
                 echo "Symlink overwritten: $target"
             fi
@@ -71,6 +72,7 @@ function install_symlinks
         return
     fi
 
+    mkdir -p "$(dirname "$target")"
     ln -s "$symlink_source_path" "$target"
     echo "Symlink created: $target"
 }
@@ -79,7 +81,7 @@ function delete_symlinks
 {
     local symlink_source_path=$1
     local symlink_dest=$2
-    local target="$HOME/.$symlink_dest"
+    local target="$HOME/$symlink_dest"
 
     if [ -L "$target" ]; then
         if $DRY_RUN; then
@@ -101,7 +103,19 @@ function delete_symlinks
 
 
 while IFS= read -r -d '' symlink_source_path; do
-    symlink_dest="$(basename "${symlink_source_path%%.symlink}")" #< Remove the string ".symlink"
+    relative_path="${symlink_source_path#"$ROOT_DIR"/}"
+    app_folder="${relative_path%%/*}"
+
+    if [[ "$app_folder" == .* ]]; then
+        # A dot-prefixed app folder (e.g. .claude/) mirrors its whole relative
+        # path under $HOME, so several files can share the same real parent
+        # directory instead of each becoming their own top-level dotfile.
+        symlink_dest="${relative_path%.symlink}"
+    else
+        # A plain app folder is just organisational: only the basename
+        # matters, and it becomes a single dotfile/dotdir at the top of $HOME.
+        symlink_dest=".$(basename "${symlink_source_path%%.symlink}")"
+    fi
 
     "$ACTION" "$symlink_source_path" "$symlink_dest"
 done < <(find "$ROOT_DIR" -maxdepth 2 -name "*.symlink" -print0)

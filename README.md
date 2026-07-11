@@ -54,6 +54,26 @@ An existing symlink is skipped (and reported) unless `-f/--force` is
 passed; a real file or directory already at that path is never
 overwritten, even with `--force`.
 
+### Grouping several files under the same real directory
+
+Some apps keep their config as several files inside one folder that must
+stay a real directory — e.g. `~/.claude/`, which also holds local cache
+and session data that no symlink should ever replace. For that case, name
+the app folder itself with a leading dot, like `.claude/`: each
+`*.symlink` inside it is then mirrored at the same relative path under
+`$HOME`, instead of becoming its own top-level dotfile:
+
+| In the repo                      | Linked to                  |
+|------------------------------------|-----------------------------|
+| `.claude/CLAUDE.md.symlink`       | `~/.claude/CLAUDE.md`      |
+| `.claude/settings.json.symlink`  | `~/.claude/settings.json` |
+| `.claude/scripts.symlink/`        | `~/.claude/scripts`        |
+
+`~/.claude/` itself stays a plain, real directory — only the files or
+folders you actually put in `.claude/` become symlinks inside it. A
+regular (non-dot) app folder keeps mapping only its basename to a single
+top-level dotfile, as described above.
+
 ## Usage
 
 Run these from the root of the repo (where `manage-symlinks.sh` lives):
