@@ -6,6 +6,7 @@ ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ACTION=""
 DRY_RUN=false
 FORCE=false
+SKIPPED_COUNT=0
 
 usage()
 {
@@ -54,7 +55,8 @@ function install_symlinks
                 echo "Symlink overwritten: $target"
             fi
         else
-            echo "Skipped (symlink already exists, use -f/--force to overwrite): $target"
+            echo "Skipped: $target (already -> $(readlink "$target"))"
+            SKIPPED_COUNT=$((SKIPPED_COUNT + 1))
         fi
         return
     fi
@@ -103,3 +105,7 @@ while IFS= read -r -d '' symlink_source_path; do
 
     "$ACTION" "$symlink_source_path" "$symlink_dest"
 done < <(find "$ROOT_DIR" -maxdepth 2 -name "*.symlink" -print0)
+
+if [ "$SKIPPED_COUNT" -gt 0 ] && ! $FORCE; then
+    echo "$SKIPPED_COUNT symlink(s) skipped — use -f/--force to overwrite them."
+fi
