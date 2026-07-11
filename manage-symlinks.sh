@@ -39,66 +39,77 @@ if [ -z "$ACTION" ]; then
 fi
 
 
+function short_path
+{
+    printf '%s' "${1/#"$HOME"/~}"
+}
+
 function install_symlinks
 {
     local symlink_source_path=$1
     local symlink_dest=$2
+    local symlink_source_rel=$3
     local target="$HOME/$symlink_dest"
+    local target_display
+    target_display="$(short_path "$target")"
 
     if [ -L "$target" ]; then
         if $FORCE; then
             if $DRY_RUN; then
-                echo "[dry-run] Would overwrite existing symlink: $target -> $symlink_source_path"
+                echo "[dry-run] ✅ $target_display (would overwrite -> $symlink_source_rel)"
             else
                 rm -f "$target"
                 mkdir -p "$(dirname "$target")"
                 ln -s "$symlink_source_path" "$target"
-                echo "Symlink overwritten: $target"
+                echo "✅ $target_display (overwritten -> $symlink_source_rel)"
             fi
         else
-            echo "Skipped: $target (already -> $(readlink "$target"))"
+            echo "🟢 $target_display (already linked, ok)"
             SKIPPED_COUNT=$((SKIPPED_COUNT + 1))
         fi
         return
     fi
 
     if [ -e "$target" ]; then
-        echo "Skipped (real file/directory exists, will not overwrite): $target"
+        echo "🟠 $target_display (real file/dir here, not touched)"
         return
     fi
 
     if $DRY_RUN; then
-        echo "[dry-run] Would create symlink: $target -> $symlink_source_path"
+        echo "[dry-run] ✅ $target_display (would create -> $symlink_source_rel)"
         return
     fi
 
     mkdir -p "$(dirname "$target")"
     ln -s "$symlink_source_path" "$target"
-    echo "Symlink created: $target"
+    echo "✅ $target_display (created -> $symlink_source_rel)"
 }
 
 function delete_symlinks
 {
     local symlink_source_path=$1
     local symlink_dest=$2
+    local symlink_source_rel=$3
     local target="$HOME/$symlink_dest"
+    local target_display
+    target_display="$(short_path "$target")"
 
     if [ -L "$target" ]; then
         if $DRY_RUN; then
-            echo "[dry-run] Would delete symlink: $target"
+            echo "[dry-run] ✅ $target_display (would delete)"
         else
             rm -f "$target"
-            echo "Symlink deleted: $target"
+            echo "✅ $target_display (deleted)"
         fi
         return
     fi
 
     if [ -e "$target" ]; then
-        echo "Skipped (real file/directory, not a symlink, will not delete): $target"
+        echo "🟠 $target_display (real file/dir here, not touched)"
         return
     fi
 
-    echo "Nothing to delete (no symlink at): $target"
+    echo "-  $target_display (nothing to delete)"
 }
 
 
@@ -117,8 +128,8 @@ while IFS= read -r -d '' symlink_source_path; do
         symlink_dest=".$(basename "${symlink_source_path%%.symlink}")"
     fi
 
-    "$ACTION" "$symlink_source_path" "$symlink_dest"
-done < <(find "$ROOT_DIR" -maxdepth 2 -name "*.symlink" -print0)
+    "$ACTION" "$symlink_source_path" "$symlink_dest" "$relative_path"
+done < <(find "$ROOT_DIR" -maxdepth 2 -name "*.symlink" -print0 | sort -z)
 
 if [ "$SKIPPED_COUNT" -gt 0 ] && ! $FORCE; then
     echo "$SKIPPED_COUNT symlink(s) skipped — use -f/--force to overwrite them."
