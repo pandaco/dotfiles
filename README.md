@@ -3,7 +3,7 @@ dotfiles
 
 ## What this is for
 
-This repo centralizes my configuration files (dotfiles) and automates their
+This repo centralizes configuration files (dotfiles) and automates their
 installation as symlinks, instead of copy-pasting them by hand on every
 machine.
 
@@ -16,8 +16,10 @@ machine.
 - The `manage-symlinks.sh` script walks all `*.symlink` files and
   creates (or removes) the matching symlink in `$HOME`, as
   `~/.<target-name>` (the `.symlink` extension is stripped).
-- A symlink is only created if `~/.<target-name>` doesn't already exist,
-  so an existing config on the machine is never overwritten.
+- A symlink is only created if `~/.<target-name>` doesn't already exist.
+  An existing symlink is skipped (and reported) unless `-f/--force` is
+  passed; a real file or directory is never overwritten, even with
+  `--force`.
 
 ## Usage
 
@@ -31,6 +33,19 @@ Remove the symlinks:
 
 ```
 ./manage-symlinks.sh -d
+```
+
+Preview what would happen without touching the filesystem, with
+`-n/--dry-run`:
+
+```
+./manage-symlinks.sh -i -n
+```
+
+Overwrite symlinks that already exist, with `-f/--force`:
+
+```
+./manage-symlinks.sh -i -f
 ```
 
 ## Adding support for a new application
