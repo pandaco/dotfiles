@@ -1,3 +1,5 @@
 .DS_Store
 .claude
 tmp/
+vim/vim.symlink/.netrwhist
+vim/vim.symlink/plugged

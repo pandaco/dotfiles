@@ -1,0 +1,114 @@
+scriptencoding utf-8
+set encoding=utf-8
+
+syntax on
+filetype plugin indent on
+
+set mouse=a
+set number
+set ruler
+set showcmd
+set showmatch
+"set cursorline
+set background=dark
+set hidden
+
+set expandtab    " convert tabs to spaces
+set tabstop=4    " 1 tab -> 4 spaces
+set shiftwidth=4 " 1 tab -> 4 spaces
+
+" display invisible characters
+set listchars=tab:>\ ,trail:•,extends:#,nbsp:.,precedes:<
+set list
+
+set smartindent
+set autoindent
+
+" Enable 256 colors in vim
+" http://vim.wikia.com/wiki/256_colors_in_vim
+set t_Co=256
+
+" Force sudo saving mode
+cmap w!! w !sudo tee > /dev/null %
+
+" Jump to the last position when reopening a file
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
+
+" Enable matchit with %
+runtime macros/matchit.vim
+
+" Toggle fold/unfold
+set foldmethod=manual
+inoremap <F9> <C-O>za
+nnoremap <F9> za
+onoremap <F9> <C-C>za
+vnoremap <F9> zf
+
+"###############################################################
+" PLUGINS REGISTRATION
+"###############################################################
+
+call plug#begin('~/.vim/plugged')
+
+" Vim + Git
+" :Gstatus, :Gdiff
+Plug 'tpope/vim-fugitive'
+
+" Plugin for easily exploring (or browsing) Vim|:buffers|
+" <leader>be
+Plug 'jlanzarotta/bufexplorer', { 'branch': 'master' }
+
+" Vim explorer
+" Ctrl+n
+Plug 'scrooloose/nerdtree', { 'branch': 'master' }
+
+Plug 'lumiliet/vim-twig', { 'branch': 'master' }
+
+" crtlP - Finder for Vim
+" Ctrl+p
+Plug 'kien/ctrlp.vim'
+
+" easymotion
+" <leader><leader>w, <leader><leader>f+letter
+Plug 'https://github.com/easymotion/vim-easymotion'
+
+" airline
+" Fonts to install in your host system
+" https://github.com/powerline/fonts
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
+call plug#end()
+
+
+"###############################################################
+" PLUGINS CONFIGURATION
+"###############################################################
+
+" NerdTree - Open NerdTree when vim starts up if no files specified
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+" NerdTree - Open NerdTree when vim starts up on a directory
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+
+" NerdTree - Map ctrl+n
+map <C-n> :NERDTreeToggle<CR>
+
+" BufExplorer
+nnoremap <silent> <F11> :ToggleBufExplorer<CR>
+
+" Airline
+set laststatus=2
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+let g:airline_theme='wombat'
+
+" Airline - The powerline font symbols are partially messed up
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+let g:airline_symbols.space = "\ua0"
