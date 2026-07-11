@@ -115,21 +115,25 @@ function delete_symlinks
 
 while IFS= read -r -d '' symlink_source_path; do
     relative_path="${symlink_source_path#"$ROOT_DIR"/}"
-    app_folder="${relative_path%%/*}"
+    # Path inside the (always plain) app folder, e.g. "bashrc.symlink" or
+    # ".claude/CLAUDE.md.symlink".
+    rest="${relative_path#*/}"
+    rest_first_segment="${rest%%/*}"
 
-    if [[ "$app_folder" == .* ]]; then
-        # A dot-prefixed app folder (e.g. .claude/) mirrors its whole relative
-        # path under $HOME, so several files can share the same real parent
-        # directory instead of each becoming their own top-level dotfile.
-        symlink_dest="${relative_path%.symlink}"
+    if [[ "$rest_first_segment" == .* && "$rest" == */* ]]; then
+        # A dot-prefixed folder anywhere under the app folder (e.g.
+        # claude/.claude/) mirrors its own relative path under $HOME, so
+        # several files can share the same real parent directory instead of
+        # each becoming their own top-level dotfile.
+        symlink_dest="${rest%.symlink}"
     else
-        # A plain app folder is just organisational: only the basename
+        # Otherwise the app folder is just organisational: only the basename
         # matters, and it becomes a single dotfile/dotdir at the top of $HOME.
         symlink_dest=".$(basename "${symlink_source_path%%.symlink}")"
     fi
 
     "$ACTION" "$symlink_source_path" "$symlink_dest" "$relative_path"
-done < <(find "$ROOT_DIR" -maxdepth 2 -name "*.symlink" -print0 | sort -z)
+done < <(find "$ROOT_DIR" -maxdepth 3 -name "*.symlink" -print0 | sort -z)
 
 if [ "$SKIPPED_COUNT" -gt 0 ] && ! $FORCE; then
     echo "$SKIPPED_COUNT symlink(s) skipped — use -f/--force to overwrite them."

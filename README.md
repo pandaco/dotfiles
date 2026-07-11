@@ -34,11 +34,25 @@ That's it — every config already in the repo is now symlinked into
 
 ## How it works
 
-Each application gets its own subfolder at the root of the repo (max
-depth 2, e.g. `vim/`, `tmux/`). Inside it, whatever you want linked into
-`$HOME` is named `<target-name>.symlink`. Running `./manage-symlinks.sh
--i` finds every `*.symlink` path in the repo and links it to
-`~/.<target-name>` — the `.symlink` suffix is just dropped.
+Each application gets its own subfolder at the root of the repo, always
+named plainly — no leading dot — so the repo root stays scannable at a
+glance:
+
+```
+dotfiles/
+├── vim/
+│   ├── vimrc.symlink
+│   └── vim.symlink/
+│       └── autoload/
+│           └── plug.vim
+└── tmux/
+    └── tmux.conf.symlink
+```
+
+Inside an app folder, whatever you want linked into `$HOME` is named
+`<target-name>.symlink`. Running `./manage-symlinks.sh -i` finds every
+`*.symlink` path in the repo and links it to `~/.<target-name>` — the
+`.symlink` suffix is just dropped.
 
 This works the same whether `<target-name>.symlink` is a **file** or a
 whole **directory** — a symlink points at either just as well:
@@ -58,21 +72,36 @@ overwritten, even with `--force`.
 
 Some apps keep their config as several files inside one folder that must
 stay a real directory — e.g. `~/.claude/`, which also holds local cache
-and session data that no symlink should ever replace. For that case, name
-the app folder itself with a leading dot, like `.claude/`: each
-`*.symlink` inside it is then mirrored at the same relative path under
-`$HOME`, instead of becoming its own top-level dotfile:
+and session data that no symlink should ever replace. For that case, add
+a dot-prefixed folder *inside* the app folder — the app folder itself
+keeps its plain, visible name:
 
-| In the repo                      | Linked to                  |
-|------------------------------------|-----------------------------|
-| `.claude/CLAUDE.md.symlink`       | `~/.claude/CLAUDE.md`      |
-| `.claude/settings.json.symlink`  | `~/.claude/settings.json` |
-| `.claude/scripts.symlink/`        | `~/.claude/scripts`        |
+```
+dotfiles/
+└── claude/
+    └── .claude/
+        ├── CLAUDE.md.symlink
+        ├── settings.json.symlink
+        └── scripts.symlink/
+            ├── statusline.sh
+            └── usage-summary.sh
+```
+
+Every `*.symlink` under that dot-prefixed folder is mirrored at the same
+relative path under `$HOME`, instead of becoming its own top-level
+dotfile:
+
+| In the repo                                | Linked to                  |
+|---------------------------------------------|-----------------------------|
+| `claude/.claude/CLAUDE.md.symlink`         | `~/.claude/CLAUDE.md`      |
+| `claude/.claude/settings.json.symlink`     | `~/.claude/settings.json` |
+| `claude/.claude/scripts.symlink/`           | `~/.claude/scripts`        |
 
 `~/.claude/` itself stays a plain, real directory — only the files or
-folders you actually put in `.claude/` become symlinks inside it. A
-regular (non-dot) app folder keeps mapping only its basename to a single
-top-level dotfile, as described above.
+folders you actually put under `claude/.claude/` become symlinks inside
+it. An app folder with no such nested dot-folder keeps mapping each
+`*.symlink` by its own basename to a single top-level dotfile, as
+described above.
 
 ## Usage
 
