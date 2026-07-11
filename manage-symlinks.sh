@@ -40,9 +40,13 @@ function install_symlinks
     local symlink_dest=$2
     local target="$HOME/.$symlink_dest"
 
-    # Create symlink only if the file or directory ~/.$SYMLINK_DEST does not exist
-    if [ -e "$target" ] || [ -L "$target" ]; then
-        echo "Skipped (already exists): $target"
+    if [ -L "$target" ]; then
+        echo "Skipped (symlink already exists): $target"
+        return
+    fi
+
+    if [ -e "$target" ]; then
+        echo "Skipped (real file/directory exists, will not overwrite): $target"
         return
     fi
 
@@ -61,18 +65,22 @@ function delete_symlinks
     local symlink_dest=$2
     local target="$HOME/.$symlink_dest"
 
-    # Remove symlinks
-    if [ ! -L "$target" ]; then
+    if [ -L "$target" ]; then
+        if $DRY_RUN; then
+            echo "[dry-run] Would delete symlink: $target"
+        else
+            rm -f "$target"
+            echo "Symlink deleted: $target"
+        fi
         return
     fi
 
-    if $DRY_RUN; then
-        echo "[dry-run] Would delete symlink: $target"
+    if [ -e "$target" ]; then
+        echo "Skipped (real file/directory, not a symlink, will not delete): $target"
         return
     fi
 
-    rm -f "$target"
-    echo "Symlink deleted: $target"
+    echo "Nothing to delete (no symlink at): $target"
 }
 
 
