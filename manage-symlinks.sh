@@ -5,10 +5,11 @@ ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 ACTION=""
 DRY_RUN=false
+FORCE=false
 
 usage()
 {
-    echo "Usage: $0 {-i|--install|-d|--delete} [-n|--dry-run]"
+    echo "Usage: $0 {-i|--install|-d|--delete} [-n|--dry-run] [-f|--force]"
     exit 1
 }
 
@@ -22,6 +23,9 @@ for arg in "$@"; do
             ;;
         -n|--dry-run)
             DRY_RUN=true
+            ;;
+        -f|--force)
+            FORCE=true
             ;;
         *)
             usage
@@ -41,7 +45,17 @@ function install_symlinks
     local target="$HOME/.$symlink_dest"
 
     if [ -L "$target" ]; then
-        echo "Skipped (symlink already exists): $target"
+        if $FORCE; then
+            if $DRY_RUN; then
+                echo "[dry-run] Would overwrite existing symlink: $target -> $symlink_source_path"
+            else
+                rm -f "$target"
+                ln -s "$symlink_source_path" "$target"
+                echo "Symlink overwritten: $target"
+            fi
+        else
+            echo "Skipped (symlink already exists, use -f/--force to overwrite): $target"
+        fi
         return
     fi
 
