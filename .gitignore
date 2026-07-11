@@ -1,5 +1,5 @@
 .DS_Store
-.claude
+.claude/settings.local.json
 tmp/
 vim/vim.symlink/.netrwhist
 vim/vim.symlink/plugged
