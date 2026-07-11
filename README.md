@@ -132,6 +132,9 @@ Overwrite symlinks that already exist, with `-f/--force`:
 ./manage-symlinks.sh -i -f
 ```
 
+Output is grouped by status (created, already linked, conflict, ...),
+and alphabetically sorted by target path within each group.
+
 ## Adding a new application
 
 Walkthrough: you want to version your `zsh` setup, made of one file
