@@ -1,0 +1,14 @@
+# Source global definitions
+if [ -f /etc/bash.bashrc ]; then
+    . /etc/bash.bashrc
+fi
+
+export LS_OPTIONS='--color=auto'
+eval "`dircolors`"
+
+# User specific aliases and functions
+alias ll='ls -lh --color --time-style=long-iso --group-directories-first'
+
+
+export HISTTIMEFORMAT="[%Y-%m-%d %T] "
+export PS1='\[\e[1;30m\]`printf "%*s\n" "${COLUMNS:-$(tput cols)}" |tr " " "_"` \[\e[m\]\n\n[\[\e[32m\]\u@\H\[\e[m\]:\[\e[31m\]\w\[\e[m\]]\n\[\e[33m\]$(git status >/dev/null 2>&1 && git rev-parse --abbrev-ref HEAD)\[\e[m\]$ '
