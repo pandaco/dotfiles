@@ -1,0 +1,160 @@
+# ==============================================================================
+#  TMUX CONFIGURATION (~/.tmux.conf)
+# ==============================================================================
+#  
+#  LAST SUPPORTED: tmux 3.6a+
+#  PREFIX: Ctrl + a (C-a)
+#
+#  MAIN SHORTCUTS:
+#    - r         : Reload configuration
+#    - /         : Vertical split (side by side)
+#    - -         : Horizontal split (top/bottom)
+#    - c         : New window
+#    - g         : Floating Popup (Git/Shell)
+#
+#  SESSIONS MANAGEMENT:
+#    - s         : List all sessions (Press 'x' to kill a session in the list)
+#
+#  SESSIONS BACKUP & RESTORE (via Resurrect & Continuum):
+#    - BACKUP:
+#        * Automatic : Every 15 minutes (background)
+#        * Manual    : Prefix -> then press Ctrl + s (Save)
+#    - RESTORE:
+#        * Automatic : On tmux startup
+#        * Manual    : Prefix -> then press Ctrl + r (Restore)
+#
+#  NAVIGATION:
+#    - Alt + Arrows   : Move between panes
+#    - Shift + Arrows : Move between windows
+#    - Prefix + Arrows: Resize panes (repeatable)
+#
+#  COPY MODE (Vi Style):
+#    - v         : Begin selection
+#    - y         : Copy selection (Synced with macOS clipboard via tmux-yank)
+#
+#  PLUGINS MANAGEMENT:
+#    - Prefix + I : Install new plugins
+#    - Prefix + U : Update plugins
+#
+# ==============================================================================
+
+
+# ------------------------------------------------------------------------------
+# GENERAL SETTINGS
+# ------------------------------------------------------------------------------
+
+# Enable True Color (RGB) support
+set -g default-terminal "tmux-256color"
+set -as terminal-features ",xterm-256color:RGB"
+
+# Enable focus events for Neovim/Vim integration
+set -g focus-events on
+
+# Start numbering at 1
+set -g base-index 1
+setw -g pane-base-index 1
+set -g renumber-windows on
+
+# History & Responsiveness
+set -g history-limit 50000
+set -sg escape-time 0
+
+# Mouse support
+set -g mouse on
+
+# Use Vi keys in copy mode
+setw -g mode-keys vi
+set -g status-keys vi
+
+
+# ------------------------------------------------------------------------------
+# PLUGINS (via TPM)
+# ------------------------------------------------------------------------------
+
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-sensible'
+set -g @plugin 'tmux-plugins/tmux-resurrect'   # Restore sessions after reboot
+set -g @plugin 'tmux-plugins/tmux-continuum'   # Auto-save sessions every 15m
+set -g @plugin 'tmux-plugins/tmux-yank'        # Advanced clipboard management
+
+# Continuum settings
+set -g @continuum-restore 'on'                 # Auto restore on tmux start
+
+# Auto-install TPM if not found
+if "test ! -d ~/.tmux/plugins/tpm" \
+   "run 'git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm && ~/.tmux/plugins/tpm/bin/install_plugins'"
+
+
+# ------------------------------------------------------------------------------
+# KEY BINDINGS
+# ------------------------------------------------------------------------------
+
+set -g prefix C-a
+unbind C-b
+bind C-a send-prefix
+
+# Last used window
+bind C-a last-window
+
+# Reload config
+bind r source-file ~/.tmux.conf \; display-message "Config reloaded..."
+
+# Splits (keeps current path)
+bind / split-window -h -c "#{pane_current_path}"
+bind - split-window -v -c "#{pane_current_path}"
+bind c new-window -c "#{pane_current_path}"
+
+# POPUP MAGIC
+bind g display-popup -d "#{pane_current_path}" -w80% -h80% -E "bash"
+
+# Navigation (Alt + Arrows for panes, Shift + Arrows for windows)
+bind -n M-Left select-pane -L
+bind -n M-Right select-pane -R
+bind -n M-Up select-pane -U
+bind -n M-Down select-pane -D
+
+bind -n S-Left  previous-window
+bind -n S-Right next-window
+
+# Resize (Prefix + Arrows)
+bind -r Left  resize-pane -L 5
+bind -r Right resize-pane -R 5
+bind -r Up    resize-pane -U 5
+bind -r Down  resize-pane -D 5
+
+# Copy Mode
+bind-key -T copy-mode-vi v send-keys -X begin-selection
+
+
+# ------------------------------------------------------------------------------
+# DESIGN & STATUS BAR (MODERN LOOK)
+# ------------------------------------------------------------------------------
+
+set -g status-interval 5
+set -g status-position bottom
+set -g status-justify left
+set -g status-style "bg=default,fg=white"
+
+# Left Side: Session icon + Name
+set -g status-left "#[fg=blue,bold] 󱂬 Session: #S #[fg=default]| "
+set -g status-left-length 30
+
+# Right Side: Path icon + last 2 directories | Date & Time
+# Format: Shows 'parent/current' folder instead of full absolute path
+set -g status-right "#[fg=cyan]󰉖 #(echo '#{pane_current_path}' | rev | cut -d'/' -f1-2 | rev) #[fg=yellow]| 󰃭 %d %b 󱑒 %H:%M "
+set -g status-right-length 100
+
+# Window Status (Modern Pills)
+setw -g window-status-format " #[fg=colour244]#I:#[fg=colour250]#W "
+setw -g window-status-current-format " #[fg=green,bold]󰄱 #I:#[fg=white,bold]#W#F "
+setw -g window-status-separator ""
+
+# Panes styling
+set -g pane-border-style "fg=colour238"
+set -g pane-active-border-style "fg=blue"
+
+# Message styling
+set -g message-style "fg=black,bg=yellow,bold"
+
+# Load TPM
+run '~/.tmux/plugins/tpm/tpm'
