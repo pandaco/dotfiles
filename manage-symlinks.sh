@@ -1,49 +1,83 @@
 #!/bin/bash
+set -euo pipefail
 
 ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-case $1 in
-    -i|--install)
-        ACTION='install_symlinks'
-        ;;
-    -d|--delete)
-        ACTION='delete_symlinks'
-        ;;
-    *)
-        echo $"Usage: $0 {-i|--install|-d|--delete}"
-        exit 1 
-esac
+ACTION=""
+DRY_RUN=false
+
+usage()
+{
+    echo "Usage: $0 {-i|--install|-d|--delete} [-n|--dry-run]"
+    exit 1
+}
+
+for arg in "$@"; do
+    case "$arg" in
+        -i|--install)
+            ACTION='install_symlinks'
+            ;;
+        -d|--delete)
+            ACTION='delete_symlinks'
+            ;;
+        -n|--dry-run)
+            DRY_RUN=true
+            ;;
+        *)
+            usage
+            ;;
+    esac
+done
+
+if [ -z "$ACTION" ]; then
+    usage
+fi
 
 
 function install_symlinks
 {
-    SYMLINK_SOURCE_PATH=$1
-    SYMLINK_DEST=$2
+    local symlink_source_path=$1
+    local symlink_dest=$2
+    local target="$HOME/.$symlink_dest"
 
     # Create symlink only if the file or directory ~/.$SYMLINK_DEST does not exist
-    if [ ! -f ~/.$SYMLINK_DEST ] && [ ! -d ~/.$SYMLINK_DEST ]; then
-        ln -s $SYMLINK_SOURCE_PATH ~/.$SYMLINK_DEST 2>/dev/null
-        
-        [ $? -eq 0 ]  && echo "Symlink created: ~/.$SYMLINK_DEST"
+    if [ -e "$target" ] || [ -L "$target" ]; then
+        echo "Skipped (already exists): $target"
+        return
     fi
+
+    if $DRY_RUN; then
+        echo "[dry-run] Would create symlink: $target -> $symlink_source_path"
+        return
+    fi
+
+    ln -s "$symlink_source_path" "$target"
+    echo "Symlink created: $target"
 }
 
 function delete_symlinks
 {
-    SYMLINK_SOURCE_PATH=$1
-    SYMLINK_DEST=$2
+    local symlink_source_path=$1
+    local symlink_dest=$2
+    local target="$HOME/.$symlink_dest"
 
     # Remove symlinks
-    if [ -h ~/.$SYMLINK_DEST ]; then
-        rm -f ~/.$SYMLINK_DEST
-        echo "Symlink deleted: ~/.$SYMLINK_DEST"
+    if [ ! -L "$target" ]; then
+        return
     fi
+
+    if $DRY_RUN; then
+        echo "[dry-run] Would delete symlink: $target"
+        return
+    fi
+
+    rm -f "$target"
+    echo "Symlink deleted: $target"
 }
 
 
-find $ROOT_DIR -maxdepth 2 -name *.symlink -print0 | while read -d '' -r SYMLINK_SOURCE_PATH;
-do
-    SYMLINK_DEST=`basename ${SYMLINK_SOURCE_PATH%%.symlink}` #< Remove the string ".symlink"
-    
-    $ACTION $SYMLINK_SOURCE_PATH $SYMLINK_DEST
-done
+while IFS= read -r -d '' symlink_source_path; do
+    symlink_dest="$(basename "${symlink_source_path%%.symlink}")" #< Remove the string ".symlink"
+
+    "$ACTION" "$symlink_source_path" "$symlink_dest"
+done < <(find "$ROOT_DIR" -maxdepth 2 -name "*.symlink" -print0)
