@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__codegraph__*"
+    ],
+    "defaultMode": "auto"
+  },
+  "model": "sonnet",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+	    "command": "codegraph prompt-hook"
+	  }
+	]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+	    "command": "bash \"$HOME/.claude/scripts/usage-summary.sh\"",
+	    "timeout": 5
+	  }
+	]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash \"$HOME/.claude/scripts/statusline.sh\""
+  },
+  "enabledPlugins": {},
+  "extraKnownMarketplaces": {},
+  "effortLevel": "high",
+  "tui": "fullscreen",
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "auto"
+}
