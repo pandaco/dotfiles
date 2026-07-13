@@ -50,6 +50,22 @@ if [ -n "$branch" ]; then
   [ -n "$status_flags" ] && printf "$status_flags"
 fi
 
+# --- État de l'agent (fichier écrit par agent-state.sh via les hooks) ---
+session_id=$(printf '%s' "$input" | jq -r '.session_id // empty')
+if [ -n "$session_id" ]; then
+  state_file="${TMPDIR:-/tmp}/claude-agent-state-${session_id}"
+  if [ -f "$state_file" ]; then
+    agent_state=$(cat "$state_file")
+    case "$agent_state" in
+      working) state_icon="⚙️  working" ;;
+      idle)    state_icon="💤  idle" ;;
+      waiting) state_icon="⏳  waiting" ;;
+      *)       state_icon="$agent_state" ;;
+    esac
+    printf '  \033[38;5;147m%s\033[0m' "$state_icon"
+  fi
+fi
+
 # --- Model + effort level ---
 model=$(printf '%s' "$input" | jq -r '.model.display_name // empty')
 effort=$(printf '%s' "$input" | jq -r '.effort.level // empty')
@@ -66,6 +82,17 @@ if [ -n "$model" ]; then
     esac
     printf ' \033[38;5;244m[\033[38;5;%dm%s\033[38;5;244m]\033[0m' "$effort_color" "$effort"
   fi
+fi
+
+# --- Tokens (entrée/sortie cumulés) ---
+tokens=$(printf '%s' "$input" | jq -r '
+  def kfmt: if . >= 1000 then (. / 1000 | floor | tostring) + "k" else tostring end;
+  if .context_window.total_input_tokens != null then
+    "📥 \(.context_window.total_input_tokens | kfmt) | 📤 \(.context_window.total_output_tokens | kfmt)"
+  else empty end
+')
+if [ -n "$tokens" ]; then
+  printf '  \033[38;5;250m%s\033[0m' "$tokens"
 fi
 
 # --- Context usage ---
