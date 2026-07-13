@@ -156,7 +156,7 @@ while IFS= read -r -d '' symlink_source_path; do
     fi
 
     "$ACTION" "$symlink_source_path" "$symlink_dest" "$relative_path"
-done < <(find "$ROOT_DIR" -maxdepth 3 -name "*.symlink" -print0 | sort -z)
+done < <(find "$ROOT_DIR" -maxdepth 4 -name "*.symlink" -print0 | sort -z)
 
 print_results
 
