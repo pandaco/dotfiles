@@ -10,6 +10,7 @@
 * **Language:** **English ONLY** for all titles and bodies.
 * **No Co-Authors:** **NEVER** add `Co-authored-by` or AI tags.
 * **Atomic Commits:** **MUST** split diffs into logical, atomic commits. No giant bundles.
+* **Pre-commit Checks:** Before committing, **ALWAYS** verify (when relevant) that linting, tests, and builds pass 100% without errors or warnings.
 * **Validation:** **NEVER** commit automatically. You **MUST** propose the commits and **WAIT** for user validation before executing (using your `run_command` tool).
 
 Must strictly follow this compact Conventional Commits format:
@@ -17,7 +18,7 @@ Must strictly follow this compact Conventional Commits format:
 ```text
 <type>: <short title in English>
 
-<body explaining WHY>
+<body explaining WHY OVER WHAT>
 ```
 <!-- Git Rules end -->
 
