@@ -1,0 +1,17 @@
+{
+  "colorScheme": "dark",
+  "enableTelemetry": false,
+  "model": "Gemini 3.1 Pro (High)",
+  "notifications": true,
+  "showFeedbackSurvey": false,
+  "statusLine": {
+    "type": "command",
+    "command": "~//.gemini/antigravity-cli/scripts/agy-statusline.sh",
+    "enabled": true
+  },
+  "trustedWorkspaces": [
+    "/Users/alexandre/workspace/tools/feed-digest",
+    "/Users/alexandre/workspace/tools/patrimo",
+    "/Users/alexandre/workspace/tools/dotfiles"
+  ]
+}

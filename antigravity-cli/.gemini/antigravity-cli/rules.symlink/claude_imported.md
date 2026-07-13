@@ -10,7 +10,7 @@
 * **Language:** **English ONLY** for all titles and bodies.
 * **No Co-Authors:** **NEVER** add `Co-authored-by` or AI tags.
 * **Atomic Commits:** **MUST** split diffs into logical, atomic commits. No giant bundles.
-* **Validation:** **NEVER** commit automatically. You **MUST** propose the commits and **WAIT** for user validation before executing.
+* **Validation:** **NEVER** commit automatically. You **MUST** propose the commits and **WAIT** for user validation before executing (using your `run_command` tool).
 
 Must strictly follow this compact Conventional Commits format:
 
@@ -27,6 +27,7 @@ Must strictly follow this compact Conventional Commits format:
 * Use it for transient, non-versioned docs: analysis notes, tracking/backlog markdown, scratch files.
 * Not project documentation — nothing meant to be shared or committed belongs there.
 * If `./tmp` doesn't exist in a project, create it and add `tmp/` to `.gitignore` before writing into it.
+* *(Note: When the user asks for analysis or temporary data files, prioritize writing them to `./tmp` over the default Antigravity scratch directory).*
 <!-- Tmp Dir end -->
 
 <!-- CODEGRAPH_START -->
@@ -39,5 +40,3 @@ In repositories indexed by CodeGraph (a `.codegraph/` directory exists at the re
 
 If there is no `.codegraph/` directory, skip CodeGraph entirely — indexing is the user's decision.
 <!-- CODEGRAPH_END -->
-
-@RTK.md

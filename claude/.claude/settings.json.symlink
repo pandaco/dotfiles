@@ -5,16 +5,16 @@
     ],
     "defaultMode": "auto"
   },
-  "model": "sonnet",
+  "model": "claude-fable-5[1m]",
   "hooks": {
     "UserPromptSubmit": [
       {
         "hooks": [
           {
             "type": "command",
-	    "command": "codegraph prompt-hook"
-	  }
-	]
+            "command": "codegraph prompt-hook"
+          }
+        ]
       }
     ],
     "Stop": [
@@ -22,10 +22,21 @@
         "hooks": [
           {
             "type": "command",
-	    "command": "bash \"$HOME/.claude/scripts/usage-summary.sh\"",
-	    "timeout": 5
-	  }
-	]
+            "command": "bash \"$HOME/.claude/scripts/usage-summary.sh\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "rtk hook claude"
+          }
+        ]
       }
     ]
   },
