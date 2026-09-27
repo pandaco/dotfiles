@@ -1,0 +1,6 @@
+{
+  "private": true,
+  "scripts": {
+    "check:copilot-agent-tools": "node --check copilot/.copilot/agents.symlink/agent-stats.mjs && node --check copilot/.copilot/agents.symlink/sync-model-tiers.mjs && node --check copilot/.copilot/hooks.symlink/guard.mjs && node --check copilot/.copilot/hooks.symlink/log-agents.mjs && cd copilot/.copilot/agents.symlink && node sync-model-tiers.mjs --dry-run"
+  }
+}

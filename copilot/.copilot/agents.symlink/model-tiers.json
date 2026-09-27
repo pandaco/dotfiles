@@ -1,0 +1,10 @@
+{
+  "$comment": "Seul fichier à modifier quand les modèles changent. Ordre = priorité (secours si indisponible). 'reviewer' = autre famille que 'medium' (l'Implementer) pour éviter l'auto-complaisance. 'inherit' = modèle choisi dans le chat. Puis : node ~/.copilot/agents/sync-model-tiers.mjs",
+  "tiers": {
+    "high":     { "models": ["Claude Opus 5.5 (copilot)", "GPT-5.5 (copilot)", "Claude Sonnet 5 (copilot)"], "effort": "high" },
+    "reviewer": { "models": ["GPT-5.5 (copilot)", "Gemini 3.8 Flash (copilot)", "Claude Opus 5.5 (copilot)"], "effort": "high" },
+    "medium":   { "models": ["Claude Sonnet 5 (copilot)", "GPT-5.4 (copilot)", "Gemini 3.8 Flash (copilot)"], "effort": "medium" },
+    "low":      { "models": ["Claude Haiku 4.5 (copilot)", "GPT-5.4 mini (copilot)", "Gemini 3.8 Flash (copilot)"], "effort": "low" },
+    "inherit":  null
+  }
+}
