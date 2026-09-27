@@ -1,0 +1,28 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "type": "command",
+        "command": "node \"$HOME/.copilot/hooks/guard.mjs\"",
+        "windows": "node \"%USERPROFILE%\\.copilot\\hooks\\guard.mjs\"",
+        "timeout": 10
+      }
+    ],
+    "SubagentStart": [
+      {
+        "type": "command",
+        "command": "node \"$HOME/.copilot/hooks/log-agents.mjs\" SubagentStart",
+        "windows": "node \"%USERPROFILE%\\.copilot\\hooks\\log-agents.mjs\" SubagentStart",
+        "timeout": 5
+      }
+    ],
+    "SubagentStop": [
+      {
+        "type": "command",
+        "command": "node \"$HOME/.copilot/hooks/log-agents.mjs\" SubagentStop",
+        "windows": "node \"%USERPROFILE%\\.copilot\\hooks\\log-agents.mjs\" SubagentStop",
+        "timeout": 5
+      }
+    ]
+  }
+}
