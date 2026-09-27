@@ -1,0 +1,33 @@
+// À fusionner dans tes settings utilisateur VS Code :
+// Palette → "Preferences: Open User Settings (JSON)"
+{
+  // Sous-agents imbriqués (QA → QA-Jest, etc.). Désactivé par défaut.
+  "chat.subagents.allowInvocationsFromSubagents": true,
+
+  // Monorepo : remonte jusqu'aux personnalisations de la racine si tu ouvres un sous-dossier.
+  "chat.useCustomizationsInParentRepositories": true,
+
+  // AGENTS.md à la racine de chaque repo (contexte projet généré par init-project.mjs).
+  "chat.useAgentsMdFile": true,
+
+  // Hooks (activé par défaut ; ~/.copilot/hooks/*.json est lu automatiquement).
+  "chat.useHooks": true,
+
+  // Auto-approbation terminal : lecture seule + scripts npm. false = confirmation obligatoire (prioritaire).
+  "chat.tools.terminal.autoApprove": {
+    "/^npm run [\\w:.-]+( -- .*)?$/": true,
+    "/^git (status|diff|log|show|branch)\\b/": true,
+    "/^npm audit\\b/": true,
+    "/^(npx |pnpm |yarn )?nx\\b/": false,
+    "/^git (commit|push|rebase|reset|merge|cherry-pick|clean|stash (drop|clear))\\b/": false,
+    "/^npm (publish|unpublish)\\b/": false,
+    "/^npm run [\\w:.-]*(deploy|remove|destroy|rollback|release)/": false,
+    "/^(npx )?(serverless|sls|sam|cdk|terraform)\\b/": false,
+    "/^aws\\b/": false,
+    "/^(psql|pgcli|mysql|mariadb|mongosh|mongo|sqlcmd|sqlite3|redis-cli)\\b/": false,
+    "/^npm run [\\w:.-]*(migration:(run|revert)|db:|seed|schema:)/": false
+  },
+
+  // Pas de trailer "Co-authored-by: Copilot" (défaut "off" depuis VS Code 1.119, on le fige).
+  "git.addAICoAuthor": "off"
+}
