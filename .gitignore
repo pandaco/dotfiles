@@ -3,3 +3,4 @@
 tmp/
 vim/vim.symlink/.netrwhist
 vim/vim.symlink/plugged
+.agents-work/
