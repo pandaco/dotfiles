@@ -17,7 +17,8 @@ Applique le skill `conventional-commits`.
 - Liste les commandes exactes prévues : `git add <fichiers>` puis `git commit -m "<type(scope): sujet>" -m "<body problème → solution>"` (un `-m` par paragraphe ; ajouter `-m "Refs: <JIRA-KEY>"` si ticket).
 
 # Mode exécution (seulement si l'Orchestrator écrit « ACCORD UTILISATEUR »)
-- Exécute exactement les commandes validées : `git commit -m "<sujet>" -m "<body>"` (le hook vérifie le message puis VS Code demande ta confirmation). Pas de `$(…)` ni de heredoc dans le message : il ne serait pas vérifiable. `-F <fichier>` reste possible pour un message très long.
-- Jamais `--no-verify`, jamais `push --force` sans accord explicite dédié.
+- Exécute exactement les commandes validées : `git commit -m "<sujet>" -m "<body>"` (le hook vérifie le message puis VS Code demande ta confirmation). Pas de `$(…)` ni de heredoc dans le message : il ne serait pas vérifiable. **Jamais `-F <fichier>`** : toujours un `-m` par paragraphe, même pour un message long.
+- Jamais `--no-verify`.
+- **Jamais `git push`** (avec ou sans `--force`) : la commande est seulement proposée à l'utilisateur, qui l'exécute lui-même.
 
 Sortie : contrat de retour (FILES = commit-<n>.txt).
