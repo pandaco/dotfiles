@@ -5,7 +5,7 @@
     ],
     "defaultMode": "auto"
   },
-  "model": "claude-fable-5[1m]",
+  "model": "opus",
   "hooks": {
     "UserPromptSubmit": [
       {
@@ -79,5 +79,6 @@
   "effortLevel": "high",
   "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
-  "theme": "auto"
+  "theme": "auto",
+  "agentPushNotifEnabled": true
 }
